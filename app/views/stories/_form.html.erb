@@ -1,0 +1,49 @@
+<%= nested_form_for @story ,:html=>{:multipart =>true } do |f| %>
+  <% if @story.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@story.errors.count, "error") %> prohibited this story from being saved:</h2>
+
+      <ul>
+      <% @story.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :category_id %><br>
+    <%= f.select :category_id, Category.all.map {|x| [x.name,x.id]}, prompt: "select category" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :content %><br>
+    <%= f.text_area :content %>
+  </div>
+
+  <div class="field">
+    <%= f.label :author %><br>
+    <%= f.text_field :author %>
+  </div>
+  
+  <fieldset>
+    <%= f.fields_for :images do |image_form| %>
+      <%= image_tag(image_form.object.image.url(:thumb)) if image_form.object.image.present? %>
+      <p><%= image_form.label :image,"Upload Image"%>&nbsp<%= image_form.file_field :image%></p>
+      <%= image_form.link_to_remove "Remove this image" %>
+    <% end %>
+    <p><%= f.link_to_add "Add a image", :images %></p>
+  </fieldset>
+
+
+  <div class="actions">
+    <%#= f.submit %>
+    <td><%= f.submit f.object.new_record? ? 'Create' : 'Update' %></td>
+  </div>
+
+<% end %>

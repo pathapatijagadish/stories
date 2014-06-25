@@ -1,0 +1,25 @@
+<% if @story %>
+	<p>Title:<%= @story.title %></p>
+	<p>Content:<%= @story.content %></p>
+	<p>Author:<%= @story.author %></p>
+	<% @images = @story.images %>
+	<% if @images.present? %>
+		<p>
+			<div>
+				<% @images.each do |p| %>
+					<% if p.image.present? %>
+						<div style="float:left;margin:10px;">
+							<%= image_tag(p.image.url(:medium)) %>
+						</div>
+						<% end %>	
+				<% end %>
+			</div>
+		</p>
+	<% end %>
+
+<% else %>
+	<p>Record not found</p>
+<% end %>
+<br/>
+<%= link_to 'Edit', edit_story_path(@story) %> |
+<%= link_to 'Back', stories_path %>
